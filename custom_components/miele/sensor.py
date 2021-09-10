@@ -319,8 +319,12 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     devices = hass.data[MIELE_DOMAIN][DATA_DEVICES]
     for k, device in devices.items():
         device_state = device["state"]
-        ecoFeedback = device["state"]["ecoFeedback"]
         device_type = device["ident"]["type"]["value_raw"]
+
+        _LOGGER.debug(
+            "Component most likely is disabled manually, if not please report to developer"
+            device_state
+        )
 
         sensors = []
         if "status" in device_state and state_capability(
@@ -361,10 +365,10 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 
 
         # self test
-        if "MieleWaterSensor" in ecoFeedback(
-            type=device_type, state="elapsedTime"
-        ):
-            sensors.append(MieleWaterSensor(hass, device, "MieleWaterSensor"))
+        # if "MieleWaterSensor" in ecoFeedback(
+        #     type=device_type, state="elapsedTime"
+        # ):
+        #     sensors.append(MieleWaterSensor(hass, device, "MieleWaterSensor"))
 
         # if "currentWaterConsumption" in device_state["ecoFeedback"](
         #     type=device_type, state="currentWaterConsumption"
@@ -486,9 +490,7 @@ class MieleStatusSensor(MieleRawSensor):
 
         if "ecoFeedback" in device_state and device_state["ecoFeedback"] is not None:
             if "currentWaterConsumption" in device_state["ecoFeedback"]:
-                attributes["currentWaterConsumption"] = device_state["ecoFeedback"][
-                    "currentWaterConsumption"
-                ]["value"]
+                attributes["currentWaterConsumption"] = device_state["ecoFeedback"]["currentWaterConsumption"]["value"]
                 attributes["currentWaterConsumptionUnit"] = device_state["ecoFeedback"][
                     "currentWaterConsumption"
                 ]["unit"]
