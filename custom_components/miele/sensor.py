@@ -319,6 +319,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     devices = hass.data[MIELE_DOMAIN][DATA_DEVICES]
     for k, device in devices.items():
         device_state = device["state"]
+        ecoFeedback = device["state"]["ecoFeedback"]
         device_type = device["ident"]["type"]["value_raw"]
 
         sensors = []
@@ -358,11 +359,17 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
         ):
             sensors.append(MieleTimeSensor(hass, device, "elapsedTime"))
 
+
         # self test
-        if "currentWaterConsumption" in device_state["ecoFeedback"](
-            type=device_type, state="currentWaterConsumption"
+        if "elapsedTime" in ecoFeedback(
+            type=device_type, state="elapsedTime"
         ):
-            sensors.append(MieleWaterSensor(hass, device, "currentWaterConsumption"))
+            sensors.append(MieleWaterSensor(hass, device, "MieleWaterSensor"))
+
+        # if "currentWaterConsumption" in device_state["ecoFeedback"](
+        #     type=device_type, state="currentWaterConsumption"
+        # ):
+        #     sensors.append(MieleWaterSensor(hass, device, "currentWaterConsumption"))
 
         add_devices(sensors)
         ALL_DEVICES = ALL_DEVICES + sensors
