@@ -361,7 +361,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 
 
         # self test
-        if "elapsedTime" in ecoFeedback(
+        if "MieleWaterSensor" in ecoFeedback(
             type=device_type, state="elapsedTime"
         ):
             sensors.append(MieleWaterSensor(hass, device, "MieleWaterSensor"))
