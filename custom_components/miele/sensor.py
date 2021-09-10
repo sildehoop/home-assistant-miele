@@ -358,6 +358,12 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
         ):
             sensors.append(MieleTimeSensor(hass, device, "elapsedTime"))
 
+        # self test
+        if "currentWaterConsumption" in device_state["ecoFeedback"](
+            type=device_type, state="currentWaterConsumption"
+        ):
+            sensors.append(MieleWaterSensor(hass, device, "currentWaterConsumption"))
+
         add_devices(sensors)
         ALL_DEVICES = ALL_DEVICES + sensors
 
