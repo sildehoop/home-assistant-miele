@@ -323,7 +323,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 
         _LOGGER.debug(
             "Component most likely is disabled manually, if not please report to developer"
-            device_state
+            # device_state
         )
 
         sensors = []
